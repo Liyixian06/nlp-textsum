@@ -220,38 +220,39 @@ class Trainer(object):
             with open(can_path, 'w') as save_gold:
                 with torch.no_grad():
                     for batch in test_iter:
-                        src = batch.src
-                        src_lengths = batch.src_length
-                        labels = batch.labels
-                        gold = []
-                        pred = []
-                        if(self.args.structured):
-                            roots, mask = self.model(src, labels, src_lengths)
-                            sent_scores = roots[-1] + mask.float()
-                        else:
-                            sent_scores, mask = self.model(src, labels, src_lengths)
-                            sent_scores = sent_scores+mask.float()
-                        sent_scores  = sent_scores.cpu().data.numpy()
-                        selected_ids = np.argsort(-sent_scores,1)
-                        # selected_ids = np.sort(selected_ids,1)
-                        for i, idx in enumerate(selected_ids):
-                            _pred = []
-                            if(len(batch.src_str[i])==0):
-                                continue
-                            for j in selected_ids[i][:len(batch.src_str[i])]:
-                                candidate = batch.src_str[i][j].strip()
-                                if(not _block_tri(candidate,_pred)):
-                                    _pred.append(candidate)
+                        if hasattr(batch, "src"):
+                            src = batch.src
+                            src_lengths = batch.src_length
+                            labels = batch.labels
+                            gold = []
+                            pred = []
+                            if(self.args.structured):
+                                roots, mask = self.model(src, labels, src_lengths)
+                                sent_scores = roots[-1] + mask.float()
+                            else:
+                                sent_scores, mask = self.model(src, labels, src_lengths)
+                                sent_scores = sent_scores+mask.float()
+                            sent_scores  = sent_scores.cpu().data.numpy()
+                            selected_ids = np.argsort(-sent_scores,1)
+                            # selected_ids = np.sort(selected_ids,1)
+                            for i, idx in enumerate(selected_ids):
+                                _pred = []
+                                if(len(batch.src_str[i])==0):
+                                    continue
+                                for j in selected_ids[i][:len(batch.src_str[i])]:
+                                    candidate = batch.src_str[i][j].strip()
+                                    if(not _block_tri(candidate,_pred)):
+                                        _pred.append(candidate)
 
-                                if(len(_pred)==3):
-                                    break
-                            pred.append('<q>'.join(_pred))
-                            gold.append(batch.tgt_str[i])
+                                    if(len(_pred)==3):
+                                        break
+                                pred.append('<q>'.join(_pred))
+                                gold.append(batch.tgt_str[i])
 
-                        for i in range(len(gold)):
-                            save_gold.write(gold[i].strip()+'\n')
-                        for i in range(len(pred)):
-                            save_pred.write(pred[i].strip()+'\n')
+                            for i in range(len(gold)):
+                                save_gold.write(gold[i].strip()+'\n')
+                            for i in range(len(pred)):
+                                save_pred.write(pred[i].strip()+'\n')
         if(step!=-1 and self.args.report_rouge):
             rouges = self._report_rouge(gold_path, can_path)
             logger.info('Rouges at step %d \n%s'%(step,rouge_results_to_str(rouges)))
