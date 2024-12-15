@@ -20,7 +20,7 @@ class Batch(object):
 
     def __init__(self, data=None, pad_id=None, device=None, is_test=False):
         """Create a Batch from a list of examples."""
-        if data is not None:
+        if len(data) != 0:
             self.batch_size = len(data)
             src = [x[0] for x in data]
             labels = [x[1] for x in data]
@@ -47,6 +47,8 @@ class Batch(object):
                 setattr(self, 'src_str', src_str)
                 tgt_str = [x[3] for x in data]
                 setattr(self, 'tgt_str', tgt_str)
+        else:
+            self.batch_size = 0
 
     def __len__(self):
         return self.batch_size

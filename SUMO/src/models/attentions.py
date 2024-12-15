@@ -179,7 +179,7 @@ class StructuredAttention(nn.Module):
         attn = torch.transpose(d, 1,2)
         if mask is not None:
             mask = mask.expand_as(scores).byte()
-            attn = attn.masked_fill(mask, 0)
+            attn = attn.masked_fill(mask.bool(), 0)
 
         return attn, d0
 
@@ -197,7 +197,7 @@ class MultiHeadedPooling(nn.Module):
 
 
         if mask is not None:
-            scores = scores.masked_fill(1 - mask, -1e18)
+            scores = scores.masked_fill(~mask, -1e18)
 
         attn = self.softmax(scores).unsqueeze(-1)
         output = torch.sum(attn * x, -2)

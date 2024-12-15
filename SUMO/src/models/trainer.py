@@ -149,7 +149,7 @@ class Trainer(object):
 
             reduce_counter = 0
             for i, batch in enumerate(train_iter):
-                if self.n_gpu == 0 or (i % self.n_gpu == self.gpu_rank):
+                if (self.n_gpu == 0 or (i % self.n_gpu == self.gpu_rank)) and hasattr(batch, "src"):
 
                     true_batchs.append(batch)
                     normalization += batch.batch_size

@@ -98,7 +98,7 @@ class TransformerInterEncoder(nn.Module):
         batch_size, n_blocks, n_tokens = src.size()
         emb = self.embeddings(src)
         padding_idx = self.embeddings.padding_idx
-        mask_local = 1 - src.data.eq(padding_idx).view(batch_size * n_blocks, n_tokens)
+        mask_local = ~(src.data.eq(padding_idx).view(batch_size * n_blocks, n_tokens))
         mask_block = torch.sum(mask_local.view(batch_size, n_blocks, n_tokens), -1) > 0
 
 
@@ -111,7 +111,7 @@ class TransformerInterEncoder(nn.Module):
         word_vec = emb.view(batch_size * n_blocks, n_tokens, -1)
 
         for i in range(self.num_local_layers):
-            word_vec = self.transformer_local[i](word_vec, word_vec, 1 - mask_local)  # all_sents * max_tokens * dim
+            word_vec = self.transformer_local[i](word_vec, word_vec, ~mask_local)  # all_sents * max_tokens * dim
 
 
         mask_hier = mask_local[:, :, None].float()
@@ -124,7 +124,7 @@ class TransformerInterEncoder(nn.Module):
         sent_vec = sent_vec+global_pos_emb
 
         for i in range(self.num_inter_layers):
-            sent_vec = self.transformer_inter[i](sent_vec, sent_vec, 1 - mask_block)  # all_sents * max_tokens * dim
+            sent_vec = self.transformer_inter[i](sent_vec, sent_vec, ~mask_block)  # all_sents * max_tokens * dim
 
 
         sent_vec = self.layer_norm2(sent_vec)
@@ -158,7 +158,7 @@ class StructuredEncoder(nn.Module):
         batch_size, n_blocks, n_tokens = src.size()
         emb = self.embeddings(src)
         padding_idx = self.embeddings.padding_idx
-        mask_local = 1 - src.data.eq(padding_idx).view(batch_size * n_blocks, n_tokens)
+        mask_local = ~(src.data.eq(padding_idx).view(batch_size * n_blocks, n_tokens))
         mask_block = torch.sum(mask_local.view(batch_size, n_blocks, n_tokens), -1) > 0
 
 
@@ -171,7 +171,7 @@ class StructuredEncoder(nn.Module):
         word_vec = emb.view(batch_size * n_blocks, n_tokens, -1)
 
         for i in range(self.num_local_layers):
-            word_vec = self.transformer_local[i](word_vec, word_vec, 1 - mask_local)
+            word_vec = self.transformer_local[i](word_vec, word_vec, ~mask_local)
 
         mask_hier = mask_local[:, :, None].float()
         word_vec = word_vec * mask_hier
@@ -187,7 +187,7 @@ class StructuredEncoder(nn.Module):
         structure_vec = sent_vec
         roots = []
         for i in range(self.num_inter_layers):
-            structure_vec, root = self.transformer_inter[i](sent_vec, structure_vec, 1 - mask_block)
+            structure_vec, root = self.transformer_inter[i](sent_vec, structure_vec, ~mask_block)
             roots.append(root)
 
 
