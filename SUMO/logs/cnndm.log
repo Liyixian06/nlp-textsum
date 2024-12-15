@@ -1,0 +1,23 @@
+[2024-12-15 15:09:43,568 INFO] Loading checkpoint from ../models/str_l5_i3/model_step_20000.pt
+[2024-12-15 15:09:44,269 INFO] Loading test dataset from ../data/cnndm_data/cnndm.test.0.pt, number of examples: 2001
+[2024-12-15 15:09:44,277 INFO] encoder: 5476485
+[2024-12-15 15:09:44,277 INFO] decoder: 0
+[2024-12-15 15:09:44,277 INFO] * number of parameters: 5476485
+[2024-12-15 15:11:56,560 INFO] Loading test dataset from ../data/cnndm_data/cnndm.test.1.pt, number of examples: 2001
+[2024-12-15 15:14:05,234 INFO] Loading test dataset from ../data/cnndm_data/cnndm.test.2.pt, number of examples: 2001
+[2024-12-15 15:16:12,449 INFO] Loading test dataset from ../data/cnndm_data/cnndm.test.3.pt, number of examples: 2001
+[2024-12-15 15:18:19,479 INFO] Loading test dataset from ../data/cnndm_data/cnndm.test.4.pt, number of examples: 2001
+[2024-12-15 15:20:24,962 INFO] Loading test dataset from ../data/cnndm_data/cnndm.test.5.pt, number of examples: 1485
+[2024-12-15 15:21:59,231 INFO] Calculating Rouge
+[2024-12-15 15:22:00,311 INFO] Writing summaries.
+[2024-12-15 15:22:00,311 INFO] Processing summaries. Saving system files to ../temp/tmp_9y2cl51/system and model files to ../temp/tmp_9y2cl51/model.
+[2024-12-15 15:22:00,312 INFO] Processing files in ../temp/rouge-tmp-2024-12-15-15-21-59/candidate/.
+[2024-12-15 15:22:01,295 INFO] Saved processed files to ../temp/tmp_9y2cl51/system.
+[2024-12-15 15:22:01,295 INFO] Processing files in ../temp/rouge-tmp-2024-12-15-15-21-59/reference/.
+[2024-12-15 15:22:02,226 INFO] Saved processed files to ../temp/tmp_9y2cl51/model.
+[2024-12-15 15:22:02,383 INFO] Written ROUGE configuration to ../temp/tmpht_8ek6b/rouge_conf.xml
+[2024-12-15 15:22:02,384 INFO] Running ROUGE with command ../../pyrouge/tools/ROUGE-1.5.5/ROUGE-1.5.5.pl -e ../../pyrouge/tools/ROUGE-1.5.5/data -c 95 -m -r 1000 -n 2 -a ../temp/tmpht_8ek6b/rouge_conf.xml
+[2024-12-15 15:24:02,129 INFO] Rouges at step 0 
+>> ROUGE-F(1/2/3/l): 39.60/16.99/35.95
+ROUGE-R(1/2/3/l): 35.59/15.25/32.32
+
