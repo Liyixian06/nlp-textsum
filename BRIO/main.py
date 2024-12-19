@@ -71,7 +71,7 @@ def evaluation(args):
     if args.is_pegasus:
         tok = PegasusTokenizer.from_pretrained(args.model_type)
     else:
-        tok = BartTokenizer.from_pretrained(args.model_type)
+        tok = BartTokenizer.from_pretrained('./model')
     collate_fn = partial(collate_mp_brio, pad_token_id=tok.pad_token_id, is_test=True)
     test_set = BrioDataset(f"./{args.dataset}/{args.datatype}/test", args.model_type, is_test=True, max_len=512,
      is_sorted=False, max_num=args.max_num, is_untok=True, total_len=args.total_len, is_pegasus=args.is_pegasus)
@@ -355,7 +355,7 @@ def run(rank, args):
     if args.is_pegasus:
         tok = PegasusTokenizer.from_pretrained(args.model_type)
     else:
-        tok = BartTokenizer.from_pretrained(args.model_type)
+        tok = BartTokenizer.from_pretrained('./model')
     collate_fn = partial(collate_mp_brio, pad_token_id=tok.pad_token_id, is_test=False)
     collate_fn_val = partial(collate_mp_brio, pad_token_id=tok.pad_token_id, is_test=True)
     train_set = BrioDataset(f"./{args.dataset}/{args.datatype}/train", args.model_type, max_len=args.max_len, max_num=args.max_num, total_len=args.total_len, is_pegasus=args.is_pegasus)

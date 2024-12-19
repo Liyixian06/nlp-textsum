@@ -43,7 +43,7 @@ class BRIO(nn.Module):
         if is_pegasus:
             self.model = PegasusScorer.from_pretrained(mname, cache_dir="./local_cache")
         else:
-            self.model = BartScorer.from_pretrained(mname, cache_dir="./local_cache")
+            self.model = BartScorer.from_pretrained('./model', cache_dir="./local_cache")
         self.pad_token_id = pad_token_id
 
     def forward(self, text_id, candidate_id, normalize=True, score_mode="base", length_penalty=1, require_gold=True, adding=0):
