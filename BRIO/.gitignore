@@ -1,4 +1,5 @@
 local_cache/
+model/
 cnndm
 checkpoints/
 requirements.txt.old
