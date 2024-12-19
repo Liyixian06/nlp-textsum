@@ -1,7 +1,7 @@
 def cnndm_setting(args):
     # default setting for cnndm
     args.batch_size = getattr(args, 'batch_size', 1)
-    args.epoch = getattr(args, 'epoch', 100)
+    args.epoch = getattr(args, 'epoch', 10)
     args.report_freq = getattr(args, "report_freq", 100)
     args.accumulate_step = getattr(args, "accumulate_step", 8)
     args.margin = getattr(args, "margin", 0.001)
@@ -10,7 +10,7 @@ def cnndm_setting(args):
     args.mle_weight = getattr(args, "mle_weight", 0.1)
     args.rank_weight = getattr(args, "rank_weight", 10)
     args.model_type = getattr(args, "model_type", "facebook/bart-large-cnn")
-    args.warmup_steps = getattr(args, "warmup_steps", 10000)
+    args.warmup_steps = getattr(args, "warmup_steps", 1000)
     args.normalize = getattr(args, "normalize", True)
     args.grad_norm = getattr(args, "grad_norm", 0)
     args.seed = getattr(args, "seed", 970903)
@@ -46,7 +46,7 @@ def xsum_setting(args):
     args.mle_weight = getattr(args, "mle_weight", 0.1)
     args.rank_weight = getattr(args, "rank_weight", 10)
     args.model_type = getattr(args, "model_type", "google/pegasus-xsum")
-    args.warmup_steps = getattr(args, "warmup_steps", 10000)
+    args.warmup_steps = getattr(args, "warmup_steps", 1000)
     args.normalize = getattr(args, "normalize", True)
     args.grad_norm = getattr(args, "grad_norm", 0)
     args.seed = getattr(args, "seed", 970903)
