@@ -514,12 +514,14 @@ def run(rank, args):
 
 def main(args):
     # set env
-    if len(args.gpuid) > 1:
+    if args.gpuid == 0:
+        args.gpuid = [0]
+        run(0, args)
+    # if len(args.gpuid) > 1:
+    else:
         os.environ['MASTER_ADDR'] = 'localhost'
         os.environ['MASTER_PORT'] = f'{args.port}'
         mp.spawn(run, args=(args,), nprocs=len(args.gpuid), join=True)
-    else:
-        run(0, args)
 
 if __name__ ==  "__main__":
     parser = argparse.ArgumentParser(description='Parameters')
